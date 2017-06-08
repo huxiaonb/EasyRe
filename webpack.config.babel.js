@@ -32,7 +32,10 @@ const config = {
             {
                 test: /\.(woff|ttf|eot|svg|woff2)(\?[^]{0,100})?$/,
                 loader: 'base64-font-loader'
-            }
+            },{ 
+                test: /\.png$/, 
+                loader: "url-loader?mimetype=image/png"
+             }
         ]
     },
     plugins: [
@@ -52,17 +55,6 @@ if(!isDev){
             warnings: false
         }
     }))
-} else {
-    config.module.loaders.push({
-        
-        test: /\.js$/,
-        exclude: /(node_modules)/,
-        loader: 'string-replace',
-        query: {
-            search: 'LEGO_SERVER_HOST',
-            replace: wpsLegoHost
-        }
-    })
 }
 
 export default config
