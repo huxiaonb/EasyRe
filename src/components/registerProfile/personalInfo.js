@@ -8,8 +8,8 @@ import Select from 'antd/lib/select'
 import DatePicker from 'antd/lib/date-picker'
  
 
-import 'antd/lib/style/index.less';
-import 'antd/lib/grid/style/index.less';
+// import 'antd/lib/style/index.less';
+// import 'antd/lib/grid/style/index.less';
 import 'antd/lib/input/style/index.less';
 import 'antd/lib/button/style/index.less';
 import 'antd/lib/form/style/index.less';
@@ -31,11 +31,13 @@ class PersonalInfo extends React.Component {
         value==='其他'? this.setState({healthFlag: true}) : this.setState({healthFlag : false});
     }
     render(){
+        const { getFieldDecorator } = this.props.form;
         let nationOptions = [],
             {healthFlag} = this.state;
         for (let key in nations) {
             nationOptions.push(<Option key={key} value={nations[key]}>{nations[key]}</Option>)
         }
+        return(
         <Form layout='vertical'>
             <FormItem
                 label="姓名"
@@ -58,10 +60,10 @@ class PersonalInfo extends React.Component {
                 {getFieldDecorator('gender', {
                     rules:[{
                         required:true, message:'请选择性别！'
-                    }]
+                    }],
+                    initialValue:'男'
                 })(
-                    <Select
-                        defaultValue='汉族'>
+                    <Select>
                         <Option value="male">男</Option>
                         <Option value="female">女</Option>
                     </Select>
@@ -74,10 +76,10 @@ class PersonalInfo extends React.Component {
                 {getFieldDecorator('folk', {
                     rules:[{
                         type:'string', required:true, message:'请选择民族！'
-                    }]
+                    }],
+                    initialValue : '汉族'
                 })(
-                    <Select
-                        defaultValue='汉族'>
+                    <Select>
                         {nationOptions}
                     </Select>
                 )}
@@ -96,10 +98,10 @@ class PersonalInfo extends React.Component {
                 label="健康状况"
                 name='healthState'>
                 {getFieldDecorator('healthState', {
-                    rules: [{ type:'string', required: true, message: '请选择健康状况!' }]
+                    rules: [{ type:'string', required: true, message: '请选择健康状况!' }],
+                    initialValue : '良好'
                 })(
                     <Select
-                        defaultValue='良好'
                         onChange={this.handleHealthChange.bind(this)}>
                         <option value="良好">良好</option>
                         <option value="一般">一般</option>
@@ -193,7 +195,7 @@ class PersonalInfo extends React.Component {
                 )}               
              </FormItem>
         </Form>
-    }
+        )}
 }
 
 export default Form.create()(PersonalInfo)
