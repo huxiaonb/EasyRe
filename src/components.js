@@ -1,4 +1,7 @@
-import RegisterForm from './components/RegisterForm'
+//import RegisterForm from './components/RegisterForm'
+//import RegisterProfile from './components/registerProfile'
+//import Profile from './components/profile'
+import Index from './components/registerProfile/index'
 
 // 尽量别直接用全局变量 $
 const $ = jQuery
@@ -9,9 +12,15 @@ class LegoComponent{
         this.$el = selector
     }
     // 暴露插件
+
+    
     registerForm(...args){
-        return RegisterForm(this.$el, ...args)
+        return Index(this.$el, ...args)
+        //return RegisterForm(this.$el, ...args)
     }
+    // registerProfile(...args){
+    //     return RegisterProfile(this.$el, ...args)
+    // }
 }
 
 const Lego = selector => {

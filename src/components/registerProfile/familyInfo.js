@@ -89,7 +89,7 @@ class FamilyInfo extends React.Component {
         const keys = getFieldValue('keys');
         const formItems = keys.map((key, index) => {
             return (
-                <Card title={noti} key={`${key}`} style={{marginTop:'20px'}} extra={<span title='删除此列家庭成员'><Icon onClick={() => this.remove(key)} style={{cursor: 'pointer',transition: 'all .3s'}} type='close'/></span>}>  
+                <Card title={noti} key={`${key}`} style={{marginTop:'20px'}} extra={<span title='删除此列'><Icon onClick={() => this.remove(key)} style={{cursor: 'pointer',transition: 'all .3s'}} type='close'/></span>}>  
                     <FormItem
                         {...formItemLayout}
                         label="姓名"
@@ -185,6 +185,7 @@ class FamilyInfo extends React.Component {
                                 <Option value="male">父母</Option>
                                 <Option value="female">兄弟</Option>
                                 <Option value="female">姐妹</Option>
+                                <option value="other">其他亲属</option>
                         </Select>
                         )}
                     </FormItem>
@@ -211,7 +212,6 @@ class FamilyInfo extends React.Component {
                     <div>
                         <Button type="primary" size='large' icon="plus-circle-o" onClick={this.add.bind(this)} style={{width:'100%'}}>新增家庭成员</Button>
                     </div>
-                    
                 </Card>
         )
     }

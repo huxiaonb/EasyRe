@@ -84,7 +84,7 @@ class PersonalInfo extends React.Component {
                     </Select>
                 )}
             </FormItem>
-            //'date-picker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
+            
             <FormItem
                 label="出生日期"
                 name='date-picker'>
