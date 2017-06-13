@@ -66,6 +66,7 @@ export default class OhterInfo extends React.Component {
              })
         });
         if(wFlag && eFlag){
+            this.context.updateProfile({otherInfo:{workExp:workFs,edu:eduFs},flag:3});
             this.props.handleSubmit();
         }
     }

@@ -58,6 +58,7 @@ class FamilyInfo extends React.Component {
                      mphoneNumber : form.getFieldValue('mphoneNumber_' + key),
                  });
                  familyInfos.push(fmObj);
+                 this.context.updateProfile({family:familyInfos,flag:2});
              })
              this.props.next()
         });
@@ -155,9 +156,10 @@ class FamilyInfo extends React.Component {
                             initialValue:'父母'
                         })(
                             <Select>
-                                <Option value="male">父母</Option>
-                                <Option value="female">兄弟</Option>
-                                <Option value="female">姐妹</Option>
+                                <Option value="parents">父母</Option>
+                                <Option value="bros">兄弟</Option>
+                                <Option value="sis">姐妹</Option>
+                                <option value="other">其他亲属</option>
                         </Select>
                         )}
                     </FormItem>
@@ -223,12 +225,12 @@ class FamilyInfo extends React.Component {
                             rules:[{
                                 required:true, message:'请选择关系！'
                             }],
-                            initialValue:'父母'
+                            initialValue:'parents'
                         })(
                             <Select>
-                                <Option value="male">父母</Option>
-                                <Option value="female">兄弟</Option>
-                                <Option value="female">姐妹</Option>
+                                <Option value="parents">父母</Option>
+                                <Option value="bros">兄弟</Option>
+                                <Option value="sis">姐妹</Option>
                                 <option value="other">其他亲属</option>
                         </Select>
                         )}

@@ -53,6 +53,7 @@ class PersonalInfo extends React.Component {
                  tele : form.getFieldValue('tele'),
                  qqNumber : form.getFieldValue('qqNumber')
              })
+             //this.context.updateProfile({personalInfo,flag:1});
              this.props.next();
         });
     }
@@ -61,6 +62,7 @@ class PersonalInfo extends React.Component {
     }
     render(){
         const { getFieldDecorator } = this.props.form;
+        let {personalInfo} = this.props.info;
         let nationOptions = [],
             {healthFlag} = this.state;
         for (let key in nations) {

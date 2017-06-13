@@ -55,11 +55,25 @@ class Index extends React.Component {
       info:{
         personal:{},
         family:{},
-        OtherInfo:{}
+        otherInfo:{}
       }
     };
-  updateProfile(){
+  updateProfile(obj){
+    let {info} = this.state;
+    switch(obj.flag){
+      case 1 :
+        info = Object.assign(info,{personal : obj.content})
+        break;
+      case 2 :
+        info = Object.assign(info,{family : obj.content})
+        break;
+      case 3 :
+        info = Object.assign(info,{otherInfo : obj.content})
+        break;
 
+    }
+
+    this.setState({info})
   }  
   next() {
     const current = this.state.current + 1;
