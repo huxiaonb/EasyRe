@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import Form from 'antd/lib/form'
 import Input from 'antd/lib/input'
@@ -8,6 +9,7 @@ import Select from 'antd/lib/select'
 import Card from 'antd/lib/card'
 import Icon from 'antd/lib/icon'
 import Badge from 'antd/lib/badge'
+import Checkbox from 'antd/lib/checkbox'
 
 
 import 'antd/lib/style/index.less';
@@ -18,6 +20,7 @@ import 'antd/lib/form/style/index.less';
 import 'antd/lib/select/style/index.less';
 import 'antd/lib/card/style/index.less';
 import 'antd/lib/badge/style/index.less';
+import 'antd/lib/checkbox/style/index.less';
 
 
 
@@ -27,6 +30,38 @@ let count = 0;
 
 
 class FamilyInfo extends React.Component {
+    static contextTypes = {
+        profile: PropTypes.object,
+        updateProfile: PropTypes.func
+    }
+    
+    prevStep(){
+        this.props.prev();
+    }
+
+    nextStep(){
+        //validate form value and set data
+        let { form } = this.props;
+        form.validateFieldsAndScroll(async (err, values)=>{
+             if (!!err) return
+             //set value to context
+             let familyInfos = [Object.assign({},{
+                 name : form.getFieldValue('name'),
+                 relationship : form.getFieldValue('relationship'),
+                 mphoneNumber : form.getFieldValue('mphoneNumber'),
+             })];
+             const keys = form.getFieldValue('keys');
+             keys.map((key, index) => {
+                 let fmObj = Object.assign({},{
+                     name : form.getFieldValue('name_'+ key),
+                     relationship : form.getFieldValue('relationship_' + key),
+                     mphoneNumber : form.getFieldValue('mphoneNumber_' + key),
+                 });
+                 familyInfos.push(fmObj);
+             })
+             this.props.next()
+        });
+    }
     remove(k){
         const { form } = this.props;
         // can use data-binding to get
@@ -101,7 +136,7 @@ class FamilyInfo extends React.Component {
                             rules:[{
                                 type:'string', pattern:/^[\u4e00-\u9fa5]{1,5}$/, message:'请输入有效的姓名！'
                             },{
-                                required:true,message:'请输入有效的姓名！'
+                                required:true, message:'请输入有效的姓名！'
                             }]
                         })(
                             <Input placeholder='请输入姓名！'/>
@@ -143,12 +178,21 @@ class FamilyInfo extends React.Component {
                             <Input placeholder='请输入联系手机！'/>                        
                     )}
                     </FormItem>
-                 
+                 <FormItem
+                        label=''
+                        name={`em_check_${key}`}>
+                    <Checkbox
+                        defaultChecked={false}
+                    >
+                        标记为紧急联系人
+                    </Checkbox>
+                    </FormItem>
                 </Card>
             )});
         
         
         return(
+            <div key='fam_info'>
                 <Card title="家庭成员(最多6条)">
                     <Form layout='inline'>
                     <Card>
@@ -206,6 +250,15 @@ class FamilyInfo extends React.Component {
                             <Input placeholder='请输入联系手机！'/>                        
                     )}
                     </FormItem>
+                    <FormItem
+                        label=''
+                        name='em_check'>
+                        <Checkbox
+                            defaultChecked={true}
+                        >
+                            标记为紧急联系人
+                        </Checkbox>
+                    </FormItem>
                     </Card>
                         {formItems}
                     </Form>
@@ -213,6 +266,11 @@ class FamilyInfo extends React.Component {
                         <Button type="primary" size='large' icon="plus-circle-o" onClick={this.add.bind(this)} style={{width:'100%'}}>新增家庭成员</Button>
                     </div>
                 </Card>
+                <div style={{textAlign:'center', marginTop:'15px'}}>
+                    <Button style={{ marginRight: 8 }} onClick={this.prevStep.bind(this)}>上一步</Button>
+                    <Button type="primary" onClick={this.nextStep.bind(this)}>下一步</Button>
+                </div>
+                </div>
         )
     }
 }

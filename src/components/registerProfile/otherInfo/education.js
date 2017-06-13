@@ -148,12 +148,12 @@ class EduExp extends React.Component {
             )});
             return(
                 <Card title="教育经历">
-                    <Form layout='inline'>
+                    <Form layout='inline' >
                     <Card>
                      <FormItem
                         {...formItemLayout}
                         label="学校名称"
-                        name='title'
+                        name='title_'
                         hasFeedback
                         key='title'>
                         {getFieldDecorator('title_', {
@@ -169,10 +169,10 @@ class EduExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="起止日期"
-                        name='rangeTime'
+                        name='rangeTime_'
                         hasFeedback
-                        key='rangeTime'>
-                        {getFieldDecorator('rangeTime', {
+                        key='rangeTime_'>
+                        {getFieldDecorator('rangeTime_', {
                              rules: [{ type: 'array', required: true, message: '请选择日期!' }],
                         })(
                             <RangePicker />
@@ -181,10 +181,10 @@ class EduExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="专业"
-                        name='position'
+                        name='position_'
                         hasFeedback
-                        key='position'>
-                        {getFieldDecorator('position', {
+                        key='position_'>
+                        {getFieldDecorator('position_', {
                             rules: [{
                                 required: true, 
                                 whitespace : true,
@@ -198,10 +198,10 @@ class EduExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="毕业与否"
-                        name='grad'
+                        name='grad_'
                         hasFeedback
-                        key='grad'>
-                        {getFieldDecorator('grad', {
+                        key='grad_'>
+                        {getFieldDecorator('grad_', {
                             rules:[{
                                 required:true, message:'请选择毕业与否！'
                             }],

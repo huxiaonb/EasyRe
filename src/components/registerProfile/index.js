@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+
 
 import Layout from 'antd/lib/Layout'
 import Steps from 'antd/lib/steps'
@@ -15,7 +17,7 @@ import 'antd/lib/message/style/index.less';
 
 import PersonalInfo from './personalInfo';
 import FamilyInfo from './familyInfo';
-import OtherInfo from './otherInfo';
+import OtherInfo from './otherInfo/index';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -36,28 +38,29 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
   }
+  static childContextTypes = {
+        profile: PropTypes.object,
+        updateProfile: PropTypes.func
+    }
+
+  getChildContext(){
+      return {
+          profile: this.state.Info,
+          updateProfile : this.updateProfile.bind(this)
+      }
+  }
+
   state = {
       current: 0,
       info:{
-        personal:{
-          name:'',
-          gender:'',
-          folk:'',
-          birthDate:'',
-          healthState:'',
-          idCardNumber:'',
-          homeAddress:'',
-          currentAddress:'',
-          phoneNumber:'',
-          email:'',
-          qqNumber:'',
-          photo:0,
-          flag:0
-        },
+        personal:{},
         family:{},
         OtherInfo:{}
       }
     };
+  updateProfile(){
+
+  }  
   next() {
     const current = this.state.current + 1;
     this.setState({ current });
@@ -65,6 +68,17 @@ class Index extends React.Component {
   prev() {
     const current = this.state.current - 1;
     this.setState({ current });
+  }
+  handleSubmit(){
+    //callApi
+    message.success('Processing complete!');
+  }
+  updateProfile(obj){
+    console.log(obj);
+  }
+  componentWillMount(){
+    //call api get edit data
+    
   }
   render() {
     const { current } = this.state;
@@ -74,29 +88,11 @@ class Index extends React.Component {
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
         <div className="steps-content">
-          {steps[this.state.current].content=='0' && <PersonalInfo/>}
-          {steps[this.state.current].content=='1' && <FamilyInfo/>}
-          {steps[this.state.current].content=='2' && <OtherInfo/>}
+          {steps[this.state.current].content=='0' && <PersonalInfo next={this.next.bind(this)}/>}
+          {steps[this.state.current].content=='1' && <FamilyInfo prev={this.prev.bind(this)} next={this.next.bind(this)}/>}
+          {steps[this.state.current].content=='2' && <OtherInfo prev={this.prev.bind(this)} handleSubmit={this.handleSubmit.bind(this)} />}
         </div>
-        <div className="steps-action" style={{lineHeight:9,textAlign:'center'}}>
-          {
-            this.state.current < steps.length - 1
-            &&
-            <Button type="primary" onClick={() => this.next()}>下一步</Button>
-          }
-          {
-            this.state.current === steps.length - 1
-            &&
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>确认提交</Button>
-          }
-          {
-            this.state.current > 0
-            &&
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              上一步
-            </Button>
-          }
-        </div>
+      
       </div>
     );
     return(

@@ -6,6 +6,7 @@ import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Select from 'antd/lib/select'
 import DatePicker from 'antd/lib/date-picker'
+import Card from 'antd/lib/card'
  
 
 // import 'antd/lib/style/index.less';
@@ -15,6 +16,7 @@ import 'antd/lib/button/style/index.less';
 import 'antd/lib/form/style/index.less';
 import 'antd/lib/select/style/index.less';
 import 'antd/lib/date-picker/style/index.less';
+import 'antd/lib/card/style/index.less';
 
 
 const FormItem = Form.Item;
@@ -24,8 +26,35 @@ const nations = ["汉族","蒙古族","回族","藏族","维吾尔族","苗族",
                "土族","达斡尔族","仫佬族","羌族","布朗族","撒拉族","毛南族","仡佬族","锡伯族","阿昌族","普米族","塔吉克族","怒族", "乌孜别克族",  
               "俄罗斯族","鄂温克族","德昂族","保安族","裕固族","京族","塔塔尔族","独龙族","鄂伦春族","赫哲族","门巴族","珞巴族","基诺族"];  
 class PersonalInfo extends React.Component {
+    static contextTypes = {
+        profile: PropTypes.object,
+        updateProfile: PropTypes.func
+    }
     state={
         healthFlag : false
+    }
+    nextStep(){
+        //validateAndSetValue
+        let { form } = this.props;
+        form.validateFieldsAndScroll(async (err, values)=>{
+             if (!!err) return
+             //set value to context
+             let personalInfo = Object.assign({},{
+                 name : form.getFieldValue('name'),
+                 gender : form.getFieldValue('gender'),
+                 folk : form.getFieldValue('folk'),
+                 birthDate : form.getFieldValue('birthDate'),
+                 healthState : form.getFieldValue('healthState'),
+                 idCardNumber : form.getFieldValue('idCardNumber'),
+                 homeAddress : form.getFieldValue('homeAddress'),
+                 currentAddress : form.getFieldValue('currentAddress'),
+                 mobile : form.getFieldValue('mobile'),
+                 email : form.getFieldValue('email'),
+                 tele : form.getFieldValue('tele'),
+                 qqNumber : form.getFieldValue('qqNumber')
+             })
+             this.props.next();
+        });
     }
     handleHealthChange(value){
         value==='其他'? this.setState({healthFlag: true}) : this.setState({healthFlag : false});
@@ -38,6 +67,7 @@ class PersonalInfo extends React.Component {
             nationOptions.push(<Option key={key} value={nations[key]}>{nations[key]}</Option>)
         }
         return(
+        <div key='per-info' style={{textAlign:'center'}}>
         <Form layout='vertical'>
             <FormItem
                 label="姓名"
@@ -87,8 +117,9 @@ class PersonalInfo extends React.Component {
             
             <FormItem
                 label="出生日期"
-                name='date-picker'>
-                {getFieldDecorator('date-picker', {
+                name='birthDate'
+                style={{textAlign:'left'}}>
+                {getFieldDecorator('birthDate', {
                     rules: [{ type:'object', required: true, message: '请选择出生日期!' }]
                 })(
                     <DatePicker />
@@ -151,7 +182,7 @@ class PersonalInfo extends React.Component {
                     rules: [{
                         type: 'string', pattern: /^[0-9]{11,13}$/, message: '请输入有效的联系手机！'
                     }, {
-                        required: true, message: '请输入有效的联系手机！'
+                        whitespace: true, required: true, message: '请输入有效的联系手机！'
                     }]
                 })(
                     <Input placeholder='请输入联系手机！'/>
@@ -159,12 +190,13 @@ class PersonalInfo extends React.Component {
              </FormItem>
              <FormItem
                 label="邮箱"
+                name='email'
                 hasFeedback>
                 {getFieldDecorator('email', {
                     rules: [{
-                    type: 'email', message: '请输入有效的邮箱!',
+                        type: 'email', message: '请输入有效的邮箱!',
                     }, {
-                    required: true, message: '请输入有效的邮箱!',
+                        required: true, message: '请输入有效的邮箱!',
                     }],
                 })(
                     <Input placeholder='请输入邮箱!'/>
@@ -186,7 +218,7 @@ class PersonalInfo extends React.Component {
                label="QQ"
                name="qqNumber"
                hasFeedback>
-               {getFieldDecorator('mobile', {
+               {getFieldDecorator('qqNumber', {
                     rules: [{
                         type: 'string', pattern: /^[0-9]{6,11}$/, message: '请输入有效的QQ！'
                     }]
@@ -195,6 +227,8 @@ class PersonalInfo extends React.Component {
                 )}               
              </FormItem>
         </Form>
+         <Button type="primary" onClick={this.nextStep.bind(this)}>下一步</Button>
+        </div>
         )}
 }
 

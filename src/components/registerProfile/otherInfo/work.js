@@ -53,6 +53,7 @@ class WorkExp extends React.Component {
             keys: nextKeys,
         });
     }
+    
     render(){
          const { getFieldDecorator, getFieldValue  } = this.props.form;
          const formItemLayout = {
