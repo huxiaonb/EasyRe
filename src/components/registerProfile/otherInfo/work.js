@@ -24,6 +24,7 @@ import 'antd/lib/date-picker/style/index.less';
 
 const FormItem = Form.Item;
 const {RangePicker } = DatePicker;
+const {Option} = Select;
 let uuid = 0;
 class WorkExp extends React.Component {
     remove(k){
