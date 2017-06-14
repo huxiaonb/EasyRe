@@ -53,6 +53,28 @@ class WorkExp extends React.Component {
             keys: nextKeys,
         });
     }
+    componentDidMount(){
+        let {workExps, form} = this.props;
+        if(workExps.length){
+            workExps.map((wk,idx)=>{
+                if(idx){
+                    form.setFieldsValue({
+                        ['title_' + idx] : wk.companyName,
+                        ['rangeTime_' + idx] : wk.date,
+                        ['position_' + idx] : wk.title,
+                        ['salary_' + idx] : wk.salaryRange
+                    })  
+                }else{
+                    form.setFieldsValue({
+                        title : wk.companyName,
+                        rangeTime : wk.date,
+                        position : wk.title,
+                        salary : wk.salaryRange
+                    })
+                }
+            });
+        }
+    }
     
     render(){
          const { getFieldDecorator, getFieldValue  } = this.props.form;
@@ -160,10 +182,10 @@ class WorkExp extends React.Component {
                      <FormItem
                         {...formItemLayout}
                         label="公司名称"
-                        name='title_'
+                        name='title'
                         hasFeedback
-                        key='title_'>
-                        {getFieldDecorator('title_', {
+                        key='title'>
+                        {getFieldDecorator('title', {
                             rules:[{
                                 type:'string', pattern:/^[A-Za-z0-9_\u4e00-\u9fa5]{1,50}$/, message:'请输入有效的公司名称！'
                             },{
@@ -176,10 +198,10 @@ class WorkExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="起止日期"
-                        name='rangeTime_'
+                        name='rangeTime'
                         hasFeedback
-                        key='rangeTime_'>
-                        {getFieldDecorator('rangeTime_', {
+                        key='rangeTime'>
+                        {getFieldDecorator('rangeTime', {
                              rules: [{ type: 'array', required: true, message: 'Please select time!' }],
                         })(
                             <RangePicker />
@@ -188,10 +210,10 @@ class WorkExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="职位"
-                        name='position_'
+                        name='position'
                         hasFeedback
-                        key='position_'>
-                        {getFieldDecorator('position_', {
+                        key='position'>
+                        {getFieldDecorator('position', {
                             rules: [{
                                 required: true, 
                                 whitespace : true,
@@ -205,10 +227,10 @@ class WorkExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="薪资范围"
-                        name='salary_'
+                        name='salary'
                         hasFeedback
-                        key='salary_'>
-                        {getFieldDecorator('salary_', {
+                        key='salary'>
+                        {getFieldDecorator('salary', {
                             rules:[{
                                 required:true, message:'请选择薪资范围！'
                             }],

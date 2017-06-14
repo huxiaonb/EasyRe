@@ -45,7 +45,7 @@ class Index extends React.Component {
 
   getChildContext(){
       return {
-          profile: this.state.Info,
+          profile: this.state.info,
           updateProfile : this.updateProfile.bind(this)
       }
   }
@@ -54,26 +54,26 @@ class Index extends React.Component {
       current: 0,
       info:{
         personal:{},
-        family:{},
-        otherInfo:{}
+        family:{family:[]},
+        otherInfo:{workExps:[],edus:[]}
       }
     };
   updateProfile(obj){
     let {info} = this.state;
     switch(obj.flag){
       case 1 :
-        info = Object.assign(info,{personal : obj.content})
+        info = Object.assign(info,{personal : obj.personalInfo})
         break;
       case 2 :
-        info = Object.assign(info,{family : obj.content})
+        info = Object.assign(info,{family : {family:obj.family}})
         break;
       case 3 :
-        info = Object.assign(info,{otherInfo : obj.content})
+        info = Object.assign(info,{otherInfo : obj.otherInfo})
         break;
 
     }
 
-    this.setState({info})
+    this.setState({info:info})
   }  
   next() {
     const current = this.state.current + 1;
@@ -87,24 +87,22 @@ class Index extends React.Component {
     //callApi
     message.success('Processing complete!');
   }
-  updateProfile(obj){
-    console.log(obj);
-  }
+
   componentWillMount(){
-    //call api get edit data
-    
+    console.log('好无辜啊！ ヽ(.◕ฺˇд ˇ◕ฺ;)ﾉ (｡◕ฺˇε ˇ◕ฺ｡）');
   }
   render() {
     const { current } = this.state;
+    let { personal, family, otherInfo } = this.state.info;
     const myStep = (
       <div style={{textAlign:'left'}}>
         <Steps current={current} style={{marginBottom:'50px'}}>
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
         <div className="steps-content">
-          {steps[this.state.current].content=='0' && <PersonalInfo next={this.next.bind(this)}/>}
+          {steps[this.state.current].content=='0' && <PersonalInfo  next={this.next.bind(this)}/>}
           {steps[this.state.current].content=='1' && <FamilyInfo prev={this.prev.bind(this)} next={this.next.bind(this)}/>}
-          {steps[this.state.current].content=='2' && <OtherInfo prev={this.prev.bind(this)} handleSubmit={this.handleSubmit.bind(this)} />}
+          {steps[this.state.current].content=='2' && <OtherInfo  prev={this.prev.bind(this)} handleSubmit={this.handleSubmit.bind(this)} />}
         </div>
       
       </div>

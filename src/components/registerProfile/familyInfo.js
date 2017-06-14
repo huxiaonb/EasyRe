@@ -25,6 +25,7 @@ import 'antd/lib/checkbox/style/index.less';
 
 
 const FormItem = Form.Item;
+const {Option} = Select;
 let uuid = 0;
 let count = 0;
 
@@ -58,11 +59,12 @@ class FamilyInfo extends React.Component {
                      mphoneNumber : form.getFieldValue('mphoneNumber_' + key),
                  });
                  familyInfos.push(fmObj);
-                 this.context.updateProfile({family:familyInfos,flag:2});
-             })
+             });
+             this.context.updateProfile({family:familyInfos, flag:2});
              this.props.next()
         });
     }
+
     remove(k){
         const { form } = this.props;
         // can use data-binding to get
@@ -91,17 +93,36 @@ class FamilyInfo extends React.Component {
         });
     }
 
-    handleSubmit(e){
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-        if (!err) {
-            console.log('Received values of form: ', values);
+   
+    componentDidMount(){
+        //set value
+        let {form} = this.props;
+        let family = this.context.profile.family;
+        let fms = family.family;
+        if(fms.length){
+            fms.map((fm,idx)=>{
+            if(idx){
+                form.setFieldsValue({
+                    ['name_'+ idx]: fm.name,
+                    ['relationship_' + idx] : fm.relationship,
+                    ['mphoneNumber_' + idx] : fm.mphoneNumber,
+                    ['em_check_' + idx] : fm.em_check
+                })
+            }else{
+                form.setFieldsValue({
+                    name : fm.name,
+                    relationship : fm.relationship,
+                    mphoneNumber : fm.mphoneNumber,
+                    em_check : fm.em_check
+                })
+            }
+            })
         }
-        });
     }
+
     render(){
         const { getFieldDecorator, getFieldValue  } = this.props.form;
-         const formItemLayout = {
+        const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
                 sm: { span: 4 },
@@ -120,8 +141,18 @@ class FamilyInfo extends React.Component {
                 </span>
             </Badge>
         )
-
-        getFieldDecorator('keys', { initialValue: []});
+        let family = this.context.profile.family.family;
+        //render extra
+        let initV = [];
+        if(family.length){
+            family.map((f,idx)=>{
+                if(idx){
+                    initV.push(idx);
+                } 
+            })
+        }
+        initV.length ? getFieldDecorator('keys', { initialValue: initV}) : getFieldDecorator('keys', { initialValue: []});
+        
         const keys = getFieldValue('keys');
         const formItems = keys.map((key, index) => {
             return (

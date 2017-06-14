@@ -24,6 +24,7 @@ import 'antd/lib/date-picker/style/index.less';
 
 const FormItem = Form.Item;
 const {RangePicker } = DatePicker;
+const {Option} = Select;
 let uuid = 0;
 class EduExp extends React.Component {
     remove(k){
@@ -52,6 +53,28 @@ class EduExp extends React.Component {
         form.setFieldsValue({
             keys: nextKeys,
         });
+    }
+    componentDidMount(){
+        let {edus, form} = this.props;
+        if(edus.length){
+            edus.map((wk,idx)=>{
+            if(idx){
+                form.setFieldsValue({
+                    ['title_' + idx] : wk.colledgeName,
+                    ['rangeTime_' + idx] : wk.date,
+                    ['position_' + idx] : wk.majors,
+                    ['grad_' + idx] : wk.isGraduated
+                })  
+            }else{
+                form.setFieldsValue({
+                    title : wk.colledgeName,
+                    rangeTime : wk.date,
+                    position : wk.major,
+                    grad : wk.isGraduated
+                })
+            }
+            })
+        }
     }
     render(){
          const { getFieldDecorator, getFieldValue  } = this.props.form;
@@ -153,10 +176,10 @@ class EduExp extends React.Component {
                      <FormItem
                         {...formItemLayout}
                         label="学校名称"
-                        name='title_'
+                        name='title'
                         hasFeedback
                         key='title'>
-                        {getFieldDecorator('title_', {
+                        {getFieldDecorator('title', {
                             rules:[{
                                 type:'string', pattern:/^[A-Za-z0-9_\u4e00-\u9fa5]{1,50}$/, message:'请输入有效的学校名称！'
                             },{
@@ -169,10 +192,10 @@ class EduExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="起止日期"
-                        name='rangeTime_'
+                        name='rangeTime'
                         hasFeedback
-                        key='rangeTime_'>
-                        {getFieldDecorator('rangeTime_', {
+                        key='rangeTime'>
+                        {getFieldDecorator('rangeTime', {
                              rules: [{ type: 'array', required: true, message: '请选择日期!' }],
                         })(
                             <RangePicker />
@@ -181,10 +204,10 @@ class EduExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="专业"
-                        name='position_'
+                        name='position'
                         hasFeedback
-                        key='position_'>
-                        {getFieldDecorator('position_', {
+                        key='position'>
+                        {getFieldDecorator('position', {
                             rules: [{
                                 required: true, 
                                 whitespace : true,
@@ -198,10 +221,10 @@ class EduExp extends React.Component {
                     <FormItem
                         {...formItemLayout}
                         label="毕业与否"
-                        name='grad_'
+                        name='grad'
                         hasFeedback
-                        key='grad_'>
-                        {getFieldDecorator('grad_', {
+                        key='grad'>
+                        {getFieldDecorator('grad', {
                             rules:[{
                                 required:true, message:'请选择毕业与否！'
                             }],

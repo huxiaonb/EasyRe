@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import Form from 'antd/lib/form'
 import Input from 'antd/lib/input'
@@ -53,16 +54,36 @@ class PersonalInfo extends React.Component {
                  tele : form.getFieldValue('tele'),
                  qqNumber : form.getFieldValue('qqNumber')
              })
-             //this.context.updateProfile({personalInfo,flag:1});
+             this.context.updateProfile({personalInfo,flag:1});
              this.props.next();
         });
     }
     handleHealthChange(value){
         value==='其他'? this.setState({healthFlag: true}) : this.setState({healthFlag : false});
     }
+    componentDidMount(){
+        let {form} = this.props;
+        let {personal} = this.context.profile
+        if(personal.name){
+            form.setFieldsValue({
+                name : personal.name,
+                gender : personal.gender,
+                folk : personal.folk,
+                birthDate : personal.birthDate,
+                healthState : personal.healthState,
+                idCardNumber : personal.idCardNumber,
+                homeAddress : personal.homeAddress,
+                currentAddress : personal.currentAddress,
+                mobile : personal.mobile,
+                email : personal.email,
+                tele : personal.tele,
+                qqNumber : personal.qqNumber
+            });
+        }
+        
+    }
     render(){
         const { getFieldDecorator } = this.props.form;
-        let {personalInfo} = this.props.info;
         let nationOptions = [],
             {healthFlag} = this.state;
         for (let key in nations) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import Form from 'antd/lib/form'
 import Input from 'antd/lib/input'
