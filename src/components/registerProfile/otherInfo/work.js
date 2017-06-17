@@ -20,6 +20,7 @@ import 'antd/lib/select/style/index.less';
 import 'antd/lib/card/style/index.less';
 import 'antd/lib/badge/style/index.less';
 import 'antd/lib/date-picker/style/index.less';
+import '../../less/ranger-picker.less'
 
 
 const FormItem = Form.Item;
@@ -124,10 +125,10 @@ class WorkExp extends React.Component {
                         {...formItemLayout}
                         label="起止日期"
                         name={`rangeTime_${key}`}
-                        hasFeedback
-                        key={`rangeTime_${key}`}>
+                        key={`rangeTime_${key}`}
+                        >
                         {getFieldDecorator(`rangeTime_${key}`, {
-                             rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+                             rules: [{ type: 'array', required: true, message: '请选择时间!' }],
                         })(
                             <RangePicker />
                         )}
@@ -200,12 +201,11 @@ class WorkExp extends React.Component {
                         {...formItemLayout}
                         label="起止日期"
                         name='rangeTime'
-                        hasFeedback
                         key='rangeTime'>
                         {getFieldDecorator('rangeTime', {
                              rules: [{ type: 'array', required: true, message: 'Please select time!' }],
                         })(
-                            <RangePicker />
+                            <RangePicker popupStyle={{display:'block'}}/>
                         )}
                     </FormItem>
                     <FormItem

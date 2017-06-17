@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import Button from 'antd/lib/button'
 import PropTypes from 'prop-types';
 
+import message from 'antd/lib/message'
+
 import 'antd/lib/button/style/index.less';
+import 'antd/lib/message/style/index.less';
 
 import WorkExp from './work';
 import EduExp from './education'
@@ -18,11 +21,12 @@ export default class OhterInfo extends React.Component {
         this.props.prev();
     }
     sumitAll(){
-        if(this.context.info.otherInfo.workExps.length && this.context.info.otherInfo.edus.length){
+        this.saveForTempory(0);
+        if(this.context.profile.otherInfo.workExps.length && this.context.profile.otherInfo.edus.length){
             this.props.handleSubmit();
         }  
     }
-    saveForTempory(){
+    saveForTempory(pFlag = 1){
         let wFlag, eFlag = false;
         let { workF, eduF } = this.refs;
         let workFs,eduFs = [];
@@ -54,7 +58,7 @@ export default class OhterInfo extends React.Component {
              //set value to context
              //rangetime set config
              eFlag = true
-             let keys = eduF.fieldsStore.getFieldValue('keys')
+             let keys = eduF.fieldsStore.getFieldValue('keys');
              eduFs = [Object.assign({},{
                  colledgeName : eduF.fieldsStore.getFieldValue('title'),
                  date : eduF.fieldsStore.getFieldValue('rangeTime'),
@@ -74,6 +78,7 @@ export default class OhterInfo extends React.Component {
         });
         if(wFlag && eFlag){
             this.context.updateProfile({otherInfo:{workExps:workFs,edus:eduFs},flag:3});
+            if(!!pFlag)message.success('暂存成功!');
         }
     }
     /*componentDidMount(){

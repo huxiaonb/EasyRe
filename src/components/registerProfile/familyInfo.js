@@ -49,14 +49,16 @@ class FamilyInfo extends React.Component {
              let familyInfos = [Object.assign({},{
                  name : form.getFieldValue('name'),
                  relationship : form.getFieldValue('relationship'),
-                 mphoneNumber : form.getFieldValue('mphoneNumber'),
+                 phoneNumber : form.getFieldValue('mphoneNumber'),
+                 emergencyFlag : form.getFieldValue('em_check')
              })];
              const keys = form.getFieldValue('keys');
              keys.map((key, index) => {
                  let fmObj = Object.assign({},{
                      name : form.getFieldValue('name_'+ key),
                      relationship : form.getFieldValue('relationship_' + key),
-                     mphoneNumber : form.getFieldValue('mphoneNumber_' + key),
+                     phoneNumber : form.getFieldValue('mphoneNumber_' + key),
+                     emergencyFlag : form.getFieldValue('em_check_' + key)
                  });
                  familyInfos.push(fmObj);
              });
@@ -105,15 +107,15 @@ class FamilyInfo extends React.Component {
                 form.setFieldsValue({
                     ['name_'+ idx]: fm.name,
                     ['relationship_' + idx] : fm.relationship,
-                    ['mphoneNumber_' + idx] : fm.mphoneNumber,
-                    ['em_check_' + idx] : fm.em_check
+                    ['mphoneNumber_' + idx] : fm.phoneNumber,
+                    ['em_check_' + idx] : fm.emergencyFlag
                 })
             }else{
                 form.setFieldsValue({
                     name : fm.name,
                     relationship : fm.relationship,
-                    mphoneNumber : fm.mphoneNumber,
-                    em_check : fm.em_check
+                    mphoneNumber : fm.phoneNumber,
+                    em_check : fm.emergencyFlag
                 })
             }
             })
@@ -214,11 +216,14 @@ class FamilyInfo extends React.Component {
                  <FormItem
                         label=''
                         name={`em_check_${key}`}>
-                    <Checkbox
-                        defaultChecked={false}
-                    >
-                        标记为紧急联系人
-                    </Checkbox>
+                        {getFieldDecorator(`em_check_${key}`,{
+                            valuePropName: 'checked',
+                            initialValue: false
+                        })(
+                            <Checkbox>
+                                标记为紧急联系人
+                            </Checkbox>
+                        )}
                     </FormItem>
                 </Card>
             )});
@@ -262,7 +267,7 @@ class FamilyInfo extends React.Component {
                                 <Option value="parents">父母</Option>
                                 <Option value="bros">兄弟</Option>
                                 <Option value="sis">姐妹</Option>
-                                <option value="other">其他亲属</option>
+                                <Option value="other">其他亲属</Option>
                         </Select>
                         )}
                     </FormItem>
@@ -286,11 +291,14 @@ class FamilyInfo extends React.Component {
                     <FormItem
                         label=''
                         name='em_check'>
-                        <Checkbox
-                            defaultChecked={true}
-                        >
-                            标记为紧急联系人
-                        </Checkbox>
+                        {getFieldDecorator('em_check',{
+                            valuePropName: 'checked',
+                            initialValue: true,
+                        })(
+                            <Checkbox>
+                                标记为紧急联系人
+                            </Checkbox>
+                        )}
                     </FormItem>
                     </Card>
                         {formItems}

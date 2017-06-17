@@ -32,4 +32,24 @@ const _request = (url, opt = {}) => {
 }
 export default {
     //api list,
+    createApplicant(data){
+        return _request({
+            url: '../api/v1/Applicant',
+            type: 'POST',
+            data: data
+        })
+    },
+    getApplicant(weChatId){
+        return _request({
+            url: '../api/v1/Applicant?query='+ JSON.stringify({wechatOpenId : weChatId}),
+            type: 'GET'
+        })
+    },
+    updateApplicant(id,data){
+        return _request({
+            url: '../api/v1/Applicant/' + id,
+            type: 'PUT',
+            data: data
+        })
+    }
 }
