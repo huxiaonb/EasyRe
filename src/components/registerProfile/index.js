@@ -60,7 +60,7 @@ class Index extends React.Component {
       info:{
         personal:{},
         family:{family:[]},
-        otherInfo:{workExps:[],edus:[]}
+        otherInfo:{workExps:[],wkeys:[],edus:[],ekeys:[]}
       }
     };
   updateProfile(obj){
@@ -89,17 +89,19 @@ class Index extends React.Component {
     this.setState({ current });
   }
   async handleSubmit(){
-    //callApi
+    //callApi && if dataObj have date value need change will copy a Object
     let{workExps,edus} = this.state.info.otherInfo;
     if(workExps.length && edus.length){
       let {personal,family} = this.state.info;
-      let pdate = Object.assign(personal.birthDate,{});
-      let appi = Object.assign(personal,{
-        birthDate : pdate.toDate()
+      let personalCopy = Object.assign({},personal);
+      // let pdate = Object.assign(personalCopy.birthDate,{});
+      let appi = Object.assign({},personalCopy,{
+        birthDate : personalCopy.birthDate.toDate()
       });
       appi.familyMembers = family.family;
       let workExperiences = [],educationHistories = [];
-      workExps.map((wk,idx)=>{
+      workExps.map((wkc,idx)=>{
+        let wk = Object.assign({},wkc);
         let wdate = [...wk.date];
         let wm = {
           companyName : wk.companyName,
@@ -110,7 +112,8 @@ class Index extends React.Component {
         };
         workExperiences.push(wm);
       });
-      edus.map((ed,idx)=>{
+      edus.map((edc,idx)=>{
+        let ed = Object.assign({},edc);
         let edate = [...ed.date];
         let em = {
           colledgeName : ed.colledgeName,
@@ -147,39 +150,40 @@ class Index extends React.Component {
     let r = await lapi.getApplicant(openId);
     //2nd : set data
     if(r.length){
-        r[0].workExperiences.map((wk,idx)=>{
+        let info = Object.assign({},r[0]);
+        info.workExperiences.map((wk,idx)=>{
             wk.startedAt = moment(wk.startedAt);
             wk.endedAt = moment(wk.endedAt);
-            r[0].workExperiences[idx].date = [wk.startedAt,wk.endedAt];
+            info.workExperiences[idx].date = [wk.startedAt,wk.endedAt];
           });
-         r[0].educationHistories.map((ed,idx)=>{
+         info.educationHistories.map((ed,idx)=>{
             ed.startedAt = moment(ed.startedAt);
             ed.endedAt = moment(ed.endedAt);
-            r[0].educationHistories[idx].date = [ed.startedAt,ed.endedAt];
+            info.educationHistories[idx].date = [ed.startedAt,ed.endedAt];
           });
-          console.log(r[0].workExperiences,r[0].educationHistories);
+          console.log(info.workExperiences,info.educationHistories);
         this.setState({
           info:{
             personal:{
-              name : r[0].name,
-              gender : r[0].gender,
-              folk : r[0].folk,
-              date : moment(r[0].birthDate),
-              healthState : r[0].healthState,
-              idCardNumber : r[0].idCardNumber,
-              homeAddress : r[0].homeAddress,
-              currentAddress : r[0].currentAddress,
-              mobile : r[0].mobile,
-              email : r[0].email,
-              tele : r[0].tele,
-              qqNumber : r[0].qqNumber
+              name : info.name,
+              gender : info.gender,
+              folk : info.folk,
+              date : moment(info.birthDate),
+              healthState : info.healthState,
+              idCardNumber : info.idCardNumber,
+              homeAddress : info.homeAddress,
+              currentAddress : info.currentAddress,
+              mobile : info.mobile,
+              email : info.email,
+              tele : info.tele,
+              qqNumber : info.qqNumber
             },
             family:{
-              family : r[0].familyMembers
+              family : info.familyMembers
             },
             otherInfo:{
-              workExps : r[0].workExperiences,
-              edus : r[0].educationHistories
+              workExps : info.workExperiences,
+              edus : info.educationHistories
             }
           }
         });

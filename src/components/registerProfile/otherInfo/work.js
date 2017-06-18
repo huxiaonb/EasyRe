@@ -100,7 +100,7 @@ class WorkExp extends React.Component {
             </Badge>
         )
 
-        getFieldDecorator('keys', { initialValue: []});
+        this.props.wkeys.length ? getFieldDecorator('keys', { initialValue: this.props.wkeys}) : getFieldDecorator('keys', { initialValue: []});
         const keys = getFieldValue('keys');
         const formItems = keys.map((key, index) => {
             return (

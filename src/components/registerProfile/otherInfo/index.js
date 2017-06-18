@@ -78,12 +78,12 @@ export default class OhterInfo extends React.Component {
              })
         });
         if(wFlag && eFlag){
-            this.context.updateProfile({otherInfo:{workExps:workFs,edus:eduFs},flag:3});
+            this.context.updateProfile({otherInfo:{workExps:workFs,wkeys:workF.fieldsStore.getFieldValue('keys'),edus:eduFs,ekeys:eduF.fieldsStore.getFieldValue('keys')},flag:3});
             if(!!pFlag)message.success('暂存成功!');
         }
     }
     /*componentDidMount(){
-        
+        let {workExps,edus} = this.context.profile.otherInfo;
         let { workF, eduF } = this.refs;
         if(workExps.length){
             workExps.map((wk,idx)=>{
@@ -127,11 +127,12 @@ export default class OhterInfo extends React.Component {
         
     }*/
     render(){
-        let { workExps,edus } = this.context.profile.otherInfo;
+        let { workExps,edus,wkeys,ekeys } = this.context.profile.otherInfo;
+        console.log(ekeys,wkeys);
         return (
             <div key='exp_cntr'>
-                <WorkExp workExps={workExps} ref='workF' />
-                <EduExp edus={edus} ref='eduF' />
+                <WorkExp workExps={workExps} wkeys={wkeys} ref='workF' />
+                <EduExp edus={edus} ekeys={ekeys} ref='eduF' />
                 <div style={{textAlign:'center', marginTop:'15px'}}>
                     <Button style={{ marginRight: 8 }} onClick={this.prevStep.bind(this)}>上一步</Button>
                     

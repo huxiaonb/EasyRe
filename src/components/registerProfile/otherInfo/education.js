@@ -98,8 +98,9 @@ class EduExp extends React.Component {
                 </span>
             </Badge>
         )
-
-        getFieldDecorator('keys', { initialValue: []});
+        let initialValue = [];
+        
+        this.props.ekeys.length? getFieldDecorator('keys', { initialValue: [] }):getFieldDecorator('keys', { initialValue: this.props.ekeys });
         const keys = getFieldValue('keys');
         const formItems = keys.map((key, index) => {
             return (

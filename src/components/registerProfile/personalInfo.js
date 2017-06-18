@@ -44,16 +44,7 @@ class PersonalInfo extends React.Component {
         previewImage: '',
         fileList:[]
     }
-    handleCancel = () => this.setState({ previewVisible: false })
 
-  handlePreview = (file) => {
-    this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
-    });
-  }
-
-  handleChange = ({ fileList }) => this.setState({ fileList })
     nextStep(){
         //validateAndSetValue
         let { form } = this.props;
@@ -121,6 +112,13 @@ class PersonalInfo extends React.Component {
     componentDidMount(){
         this.setFormValue();
     }
+    normFile = (e) => {
+        console.log('Upload event:', e);
+        if (Array.isArray(e)) {
+        return e;
+        }
+        return e && e.fileList;
+  }
     render(){
         const { getFieldDecorator } = this.props.form;
         let nationOptions = [],
@@ -129,13 +127,6 @@ class PersonalInfo extends React.Component {
             nationOptions.push(<Option key={key} value={nations[key]}>{nations[key]}</Option>)
         }
         let {personal} = this.props;
-        const { previewVisible, previewImage, fileList } = this.state;
-            const uploadButton = (
-            <div>
-                <Icon type="plus" />
-                <div className="ant-upload-text">Upload</div>
-            </div>
-            );
         return(
         <div key='per-info' style={{textAlign:'center'}}>
         <Form layout='vertical'>
@@ -315,19 +306,16 @@ class PersonalInfo extends React.Component {
                     getValueFromEvent: this.normFile,
                 })(
                      <Upload
-                        action="../position/apply/1234"
-                        listType="picture-card"
-                        onPreview={this.handlePreview}
-                        onChange={this.handleChange}
+                        action="../weChat/applicant/personalInfo/submit"
+                        name= 'file'            
                         >
-                        {fileList.length >= 3 ? null : uploadButton}
+                        <Button>
+                            <Icon type="upload" /> Click to Upload
+                        </Button>
                     </Upload>
                 )}
              </FormItem>
         </Form>
-        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
-        </Modal>
          <Button type="primary" onClick={this.nextStep.bind(this)}>下一步</Button>
         </div>
         )}
