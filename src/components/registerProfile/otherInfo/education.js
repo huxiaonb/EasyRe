@@ -63,7 +63,7 @@ class EduExp extends React.Component {
                 form.setFieldsValue({
                     ['title_' + idx] : wk.colledgeName,
                     ['rangeTime_' + idx] : wk.date,
-                    ['position_' + idx] : wk.majors,
+                    ['position_' + idx] : wk.major,
                     ['grad_' + idx] : wk.isGraduated
                 })  
             }else{
@@ -100,7 +100,7 @@ class EduExp extends React.Component {
         )
         let initialValue = [];
         
-        this.props.ekeys.length? getFieldDecorator('keys', { initialValue: [] }):getFieldDecorator('keys', { initialValue: this.props.ekeys });
+        this.props.ekeys ? getFieldDecorator('keys', { initialValue: this.props.ekeys }) : getFieldDecorator('keys', { initialValue: [] });
         const keys = getFieldValue('keys');
         const formItems = keys.map((key, index) => {
             return (
