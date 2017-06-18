@@ -35,9 +35,33 @@ class FamilyInfo extends React.Component {
         profile: PropTypes.object,
         updateProfile: PropTypes.func
     }
-    
     prevStep(){
-        this.props.prev();
+        let { form } = this.props;
+        form.validateFieldsAndScroll(async (err, values)=>{
+             if (!!err){
+                 this.props.prev();
+             }  
+             //set value to context
+             let familyInfos = [Object.assign({},{
+                 name : form.getFieldValue('name'),
+                 relationship : form.getFieldValue('relationship'),
+                 phoneNumber : form.getFieldValue('mphoneNumber'),
+                 emergencyFlag : form.getFieldValue('em_check')
+             })];
+             const keys = form.getFieldValue('keys');
+             keys.map((key, index) => {
+                 let fmObj = Object.assign({},{
+                     name : form.getFieldValue('name_'+ key),
+                     relationship : form.getFieldValue('relationship_' + key),
+                     phoneNumber : form.getFieldValue('mphoneNumber_' + key),
+                     emergencyFlag : form.getFieldValue('em_check_' + key)
+                 });
+                 familyInfos.push(fmObj);
+             });
+             this.context.updateProfile({family:familyInfos, flag:2});
+             this.props.prev();
+        });
+       
     }
 
     nextStep(){

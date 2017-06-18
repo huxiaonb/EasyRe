@@ -8,16 +8,23 @@ import Button from 'antd/lib/button'
 import Select from 'antd/lib/select'
 import DatePicker from 'antd/lib/date-picker'
 import Card from 'antd/lib/card'
+import Upload from 'antd/lib/upload';
+import Icon from 'antd/lib/icon';
+import Modal from 'antd/lib/modal';
  
 
-// import 'antd/lib/style/index.less';
-// import 'antd/lib/grid/style/index.less';
+import 'antd/lib/style/index.less';
+import 'antd/lib/grid/style/index.less';
 import 'antd/lib/input/style/index.less';
 import 'antd/lib/button/style/index.less';
 import 'antd/lib/form/style/index.less';
 import 'antd/lib/select/style/index.less';
 import 'antd/lib/date-picker/style/index.less';
 import 'antd/lib/card/style/index.less';
+import 'antd/lib/upload/style/index.less';
+
+import 'antd/lib/modal/style/index.less';
+
 
 
 const FormItem = Form.Item;
@@ -32,8 +39,21 @@ class PersonalInfo extends React.Component {
         updateProfile: PropTypes.func
     }
     state={
-        healthFlag : false
+        healthFlag : false,
+        previewVisible: false,
+        previewImage: '',
+        fileList:[]
     }
+    handleCancel = () => this.setState({ previewVisible: false })
+
+  handlePreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  }
+
+  handleChange = ({ fileList }) => this.setState({ fileList })
     nextStep(){
         //validateAndSetValue
         let { form } = this.props;
@@ -109,6 +129,13 @@ class PersonalInfo extends React.Component {
             nationOptions.push(<Option key={key} value={nations[key]}>{nations[key]}</Option>)
         }
         let {personal} = this.props;
+        const { previewVisible, previewImage, fileList } = this.state;
+            const uploadButton = (
+            <div>
+                <Icon type="plus" />
+                <div className="ant-upload-text">Upload</div>
+            </div>
+            );
         return(
         <div key='per-info' style={{textAlign:'center'}}>
         <Form layout='vertical'>
@@ -281,7 +308,26 @@ class PersonalInfo extends React.Component {
                     <Input placeholder='请输入QQ！'/>
                 )}               
              </FormItem>
+             <FormItem
+                label='upload'>
+                {getFieldDecorator('upload',{
+                    valuePropName: 'fileList',
+                    getValueFromEvent: this.normFile,
+                })(
+                     <Upload
+                        action="../position/apply/1234"
+                        listType="picture-card"
+                        onPreview={this.handlePreview}
+                        onChange={this.handleChange}
+                        >
+                        {fileList.length >= 3 ? null : uploadButton}
+                    </Upload>
+                )}
+             </FormItem>
         </Form>
+        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        </Modal>
          <Button type="primary" onClick={this.nextStep.bind(this)}>下一步</Button>
         </div>
         )}

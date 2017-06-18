@@ -27,7 +27,7 @@ moment.locale('zh-cn');
 const { Header, Content, Footer, Sider } = Layout;
 
 const Step = Steps.Step;
-
+const openId = $('#openId').text();
 const steps = [{
   title: '基本信息',
   content: '0',
@@ -126,9 +126,14 @@ class Index extends React.Component {
       /*
         set weChat ID
        */
-      appi.wechatOpenId = '123'
+			if(!!openId){
+          appi.wechatOpenId = openId;
+      }else{
+        	appi.wechatOpenId = '1234';									
+					console.log('set Wechat ID');
+      }
       console.log(appi);
-      let re = await lapi.getApplicant('123');
+      let re = await lapi.getApplicant(appi.wechatOpenId);
       let r = re.length ? await lapi.updateApplicant(re[0]._id ,appi) : await lapi.createApplicant(appi)
       console.log(r);
     }
@@ -139,7 +144,7 @@ class Index extends React.Component {
     //0: set wechat id
 
     //1st: try to get info
-    let r = await lapi.getApplicant('123');
+    let r = await lapi.getApplicant(openId);
     //2nd : set data
     if(r.length){
         r[0].workExperiences.map((wk,idx)=>{

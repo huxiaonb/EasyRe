@@ -18,6 +18,7 @@ export default class OhterInfo extends React.Component {
     }
     
     prevStep(){
+        this.saveForTempory(0);
         this.props.prev();
     }
     sumitAll(){
@@ -45,10 +46,10 @@ export default class OhterInfo extends React.Component {
              
              keys.map((key, index) => {
                  let fmObj = Object.assign({},{
-                    companyName : workF.fieldsStore.getFieldValue('title_'),
-                    date : workF.fieldsStore.getFieldValue('rangeTime_'),
-                    title : workF.fieldsStore.getFieldValue('position_'),
-                    salaryRange : workF.fieldsStore.getFieldValue('salary_'),
+                    companyName : workF.fieldsStore.getFieldValue('title_' + key),
+                    date : workF.fieldsStore.getFieldValue('rangeTime_' + key),
+                    title : workF.fieldsStore.getFieldValue('position_' + key),
+                    salaryRange : workF.fieldsStore.getFieldValue('salary_' + key),
                  });
                  workFs.push(fmObj);
              })
@@ -68,10 +69,10 @@ export default class OhterInfo extends React.Component {
              
              keys.map((key, index) => {
                  let fmObj = Object.assign({},{
-                    colledgeName : eduF.fieldsStore.getFieldValue('title_'),
-                    date : eduF.fieldsStore.getFieldValue('rangeTime_'),
-                    major : eduF.fieldsStore.getFieldValue('position_'),
-                    isGraduated : eduF.fieldsStore.getFieldValue('grad_'),
+                    colledgeName : eduF.fieldsStore.getFieldValue('title_'+ key),
+                    date : eduF.fieldsStore.getFieldValue('rangeTime_'+ key),
+                    major : eduF.fieldsStore.getFieldValue('position_'+ key),
+                    isGraduated : eduF.fieldsStore.getFieldValue('grad_'+ key),
                  });
                  eduFs.push(fmObj);
              })
@@ -133,7 +134,7 @@ export default class OhterInfo extends React.Component {
                 <EduExp edus={edus} ref='eduF' />
                 <div style={{textAlign:'center', marginTop:'15px'}}>
                     <Button style={{ marginRight: 8 }} onClick={this.prevStep.bind(this)}>上一步</Button>
-                    <Button type="primary" style={{ marginRight: 8 }} onClick={this.saveForTempory.bind(this)}>暂存</Button>
+                    
                     <Button type="primary" onClick={this.sumitAll.bind(this)}>确认提交</Button>
                 </div>
             </div>
