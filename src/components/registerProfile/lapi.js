@@ -51,5 +51,11 @@ export default {
             type: 'PUT',
             data: data
         })
+    },
+    submitSelectComp(openId, compId){
+        return _request({
+            url:'../',
+            type: '',
+        })
     }
 }
