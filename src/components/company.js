@@ -15,6 +15,7 @@ import 'antd/lib/button/style/index.less';
 import 'antd/lib/select/style/index.less';
 import 'antd/lib/checkbox/style/index.less';
 import 'antd/lib/form/style/index.less';
+import lapi from './registerProfile/lapi'
 
 
 
@@ -26,13 +27,21 @@ const openId = $('#openId').text();
 class Company extends React.Component{
     state={
         bCheck : true,
-        mCheck : true
+        mCheck : true,
+        selectCompId: ''
     }
-    subm(){
-       //call api
+    async subm(){
+        var data = {
+            openId: openId,
+            companyId: this.state.selectCompId
+        }
+        let r = await lapi.submitSelectComp(data);
     }
     handleChange(value){
         console.log(value)
+        this.setState({
+            selectCompId: value
+        });
     }
     changeB(e){
         this.setState({
@@ -52,8 +61,8 @@ class Company extends React.Component{
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={{ padding: 24, background: '#fff', minHeight: 360 ,textAlign:'center'}}>
                         
-                        <Select  defaultValue="a" onChange={this.handleChange.bind(this)} className='ant-form-item' style={{minWidth:'120px'}}>
-                            <Option value="a">公司A</Option>
+                        <Select  defaultValue="5936c9311bd50e16e864b918" onChange={this.handleChange.bind(this)} className='ant-form-item' style={{minWidth:'120px'}}>
+                            <Option value="5936c9311bd50e16e864b918">OOCL</Option>
                             <Option value="b">公司B</Option>
                             <Option value="c">公司C</Option>
                             <Option value="d">公司D</Option>

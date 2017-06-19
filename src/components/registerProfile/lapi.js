@@ -52,10 +52,11 @@ export default {
             data: data
         })
     },
-    submitSelectComp(openId, compId){
+    submitSelectComp(data){
         return _request({
-            url:'../',
-            type: '',
+            url:'../weChat/applicant/submitRegisterCompany',
+            type: 'POST',
+            data: data
         })
     }
 }
