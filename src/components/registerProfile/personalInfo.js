@@ -112,6 +112,18 @@ class PersonalInfo extends React.Component {
     componentDidMount(){
         this.setFormValue();
     }
+
+    upChange(info){
+        let fileList = info.fileList;
+        this.setState({fileList});
+    }
+    beforeUpload(file) {
+        const isLt2M = file.size / 1024 / 1024 < 5;
+        if (!isLt2M) {
+            message.error('Image must smaller than 5MB!');
+        }
+        return !!isLt2M;
+    }
     normFile = (e) => {
         console.log('Upload event:', e);
         if (Array.isArray(e)) {
@@ -120,9 +132,12 @@ class PersonalInfo extends React.Component {
         return e && e.fileList;
   }
     render(){
+        const uploadButton = ( <Button>
+                            <Icon type="upload" /> Click to Upload
+                        </Button>);
         const { getFieldDecorator } = this.props.form;
         let nationOptions = [],
-            {healthFlag} = this.state;
+            {healthFlag,fileList} = this.state;
         for (let key in nations) {
             nationOptions.push(<Option key={key} value={nations[key]}>{nations[key]}</Option>)
         }
@@ -300,18 +315,20 @@ class PersonalInfo extends React.Component {
                 )}               
              </FormItem>
              <FormItem
-                label='upload'>
+                label='上传图片'
+                name='upload'>
                 {getFieldDecorator('upload',{
                     valuePropName: 'fileList',
                     getValueFromEvent: this.normFile,
                 })(
                      <Upload
                         action={`../weChat/applicant/personalInfo/submit/` + openId}
-                        name= 'file'            
+                        name= 'file' 
+                        beforeUpload={this.beforeUpload.bind(this)}
+                        onChange={this.upChange.bind(this)}    
                         >
-                        <Button>
-                            <Icon type="upload" /> Click to Upload
-                        </Button>
+                        {fileList.length >= 1 ? null : uploadButton}
+                       
                     </Upload>
                 )}
              </FormItem>
