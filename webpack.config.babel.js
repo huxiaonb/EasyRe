@@ -1,7 +1,7 @@
 import webpack from 'webpack'
 import path from 'path'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
-const wpsLegoHost = "http://yun.wpscj.cn/lego"
+
 const isDev = process.env.NODE_ENV === "development"
 
 const config = {
@@ -12,7 +12,8 @@ const config = {
         libraryTarget: 'umd'
     },
     resolve: {
-        extensions: ["", ".js", ".json"]
+        modulesDirectories: ['node_modules', path.join(__dirname, '../node_modules')],
+        extensions: ['', '.web.js', '.js', '.json']
     },
     // devtool: "eval",
     module: {
@@ -38,12 +39,12 @@ const config = {
              }
         ]
     },
+    
     plugins: [
         new webpack.NoErrorsPlugin(),
         new ExtractTextPlugin('lego.css', {allChunks: true})
     ]
 }
-
 if(!isDev){   
      config.resolve.alias = {
         'react': 'preact-compat',
@@ -56,5 +57,6 @@ if(!isDev){
         }
     }))
 }
+
 
 export default config

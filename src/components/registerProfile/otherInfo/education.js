@@ -101,6 +101,7 @@ class EduExp extends React.Component {
         let initialValue = [];
         
         this.props.ekeys ? getFieldDecorator('keys', { initialValue: this.props.ekeys }) : getFieldDecorator('keys', { initialValue: [] });
+        uuid = this.props.ekeys ? this.props.ekeys.length : 0; 
         const keys = getFieldValue('keys');
         const formItems = keys.map((key, index) => {
             return (

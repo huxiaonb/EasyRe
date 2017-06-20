@@ -151,12 +151,15 @@ class Index extends React.Component {
     //2nd : set data
     if(r.length){
         let info = Object.assign({},r[0]);
+        let wkeys,ekeys=[];
         info.workExperiences.map((wk,idx)=>{
+            wkeys.push(idx);
             wk.startedAt = moment(wk.startedAt);
             wk.endedAt = moment(wk.endedAt);
             info.workExperiences[idx].date = [wk.startedAt,wk.endedAt];
           });
          info.educationHistories.map((ed,idx)=>{
+            ekeys.push(idx);
             ed.startedAt = moment(ed.startedAt);
             ed.endedAt = moment(ed.endedAt);
             info.educationHistories[idx].date = [ed.startedAt,ed.endedAt];
@@ -183,7 +186,9 @@ class Index extends React.Component {
             },
             otherInfo:{
               workExps : info.workExperiences,
-              edus : info.educationHistories
+              edus : info.educationHistories,
+              wkeys:wkeys,
+              ekeys:ekeys
             }
           }
         });

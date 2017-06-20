@@ -101,6 +101,8 @@ class WorkExp extends React.Component {
         )
 
         this.props.wkeys ? getFieldDecorator('keys', { initialValue: this.props.wkeys}) : getFieldDecorator('keys', { initialValue: []});
+        //待测：解决刷新之后 再进入页面不能显示多条经历记录  可能导致其他的bug
+        uuid = this.props.wkeys ? this.props.wkeys.length : 0;
         const keys = getFieldValue('keys');
         const formItems = keys.map((key, index) => {
             return (
